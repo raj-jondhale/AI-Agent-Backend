@@ -9,7 +9,7 @@ import json
 import logging
 import os
 from typing import Dict, List, Optional, Tuple
-from tools import WeatherTool, WikipediaTool, NewsTool
+from tools import WeatherTool, NewsTool
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -49,7 +49,6 @@ class AIAgent:
             self.model = "gpt-3.5-turbo"
             logger.info("Using OpenAI API")
         self.weather_tool = WeatherTool(weather_api_key)
-        self.wiki_tool = WikipediaTool()
         self.news_tool = NewsTool(news_api_key)
         
         # Short-term memory to store recent conversations
@@ -101,15 +100,14 @@ class AIAgent:
             
         Returns:
             Tuple of (tool_name, extracted_parameter)
-            tool_name can be: 'weather', 'wikipedia', 'news', or 'llm_only'
+            tool_name can be: 'weather', 'news', or 'llm_only'
         """
         classification_prompt = f"""You are an AI assistant that classifies user queries to determine which tool to use.
 
 Analyze the following query and determine which tool is most appropriate:
 - "weather" if the query asks about current weather, temperature, or weather conditions
-- "wikipedia" if the query asks about facts, definitions, history, people, places, or general knowledge
 - "news" if the query asks about recent news, current events, or latest information about a topic
-- "llm_only" if the query is conversational, opinion-based, or doesn't need external data
+- "llm_only" if the query is conversational, opinion-based, asks for facts/knowledge, or doesn't need external data
 
 Query: "{query}"
 
@@ -154,10 +152,6 @@ Respond in JSON format:
     def use_weather_tool(self, city: str) -> Optional[Dict]:
         """Fetch weather information for a city"""
         return self.weather_tool.get_weather(city)
-    
-    def use_wikipedia_tool(self, query: str) -> Optional[Dict]:
-        """Search Wikipedia for information"""
-        return self.wiki_tool.search(query)
     
     def use_news_tool(self, topic: str) -> Optional[Dict]:
         """Fetch recent news about a topic"""
@@ -253,11 +247,6 @@ Provide a clear, accurate, and helpful response."""
             tool_data = self.use_weather_tool(parameter)
             if not tool_data:
                 logger.warning(f"Weather tool failed for city: {parameter}")
-        
-        elif tool_name == "wikipedia" and parameter:
-            tool_data = self.use_wikipedia_tool(parameter)
-            if not tool_data:
-                logger.warning(f"Wikipedia tool failed for query: {parameter}")
         
         elif tool_name == "news" and parameter:
             tool_data = self.use_news_tool(parameter)

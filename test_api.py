@@ -100,26 +100,7 @@ def run_all_tests():
         "Temperature query for New York"
     )
     
-    # Test 2: Wikipedia/Knowledge Queries
-    print("📚 TESTING KNOWLEDGE QUERIES ".center(80, "="))
-    print_separator()
-    
-    test_query(
-        "Who invented the telephone?",
-        "Historical fact query"
-    )
-    
-    test_query(
-        "What is the capital of Japan?",
-        "Geography query"
-    )
-    
-    test_query(
-        "Tell me about Albert Einstein",
-        "Biography query"
-    )
-    
-    # Test 3: News Queries
+    # Test 2: News Queries
     print("📰 TESTING NEWS QUERIES ".center(80, "="))
     print_separator()
     
@@ -133,7 +114,7 @@ def run_all_tests():
         "Climate news query"
     )
     
-    # Test 4: General LLM Queries (No external tool needed)
+    # Test 3: General LLM Queries (No external tool needed)
     print("🤖 TESTING LLM-ONLY QUERIES ".center(80, "="))
     print_separator()
     
@@ -143,16 +124,16 @@ def run_all_tests():
     )
     
     test_query(
+        "Who invented the telephone?",
+        "Historical fact query"
+    )
+    
+    test_query(
         "Explain quantum computing in simple terms",
         "Explanation request"
     )
     
-    test_query(
-        "How does photosynthesis work?",
-        "Scientific explanation"
-    )
-    
-    # Test 5: Edge Cases
+    # Test 4: Edge Cases
     print("⚠️  TESTING EDGE CASES ".center(80, "="))
     print_separator()
     

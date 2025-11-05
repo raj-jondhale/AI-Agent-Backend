@@ -131,7 +131,7 @@ async def ask(request: QueryRequest):
     
     The agent will:
     1. Analyze the query to determine if external tools are needed
-    2. Fetch data from appropriate APIs (Weather, Wikipedia, News) if required
+    2. Fetch data from appropriate APIs (Weather, News) if required
     3. Use LLM to generate a coherent, natural response
     4. Return both the reasoning process and the final answer
     

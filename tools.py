@@ -1,10 +1,9 @@
 """
 External API Tools for the AI Agent
-Provides integrations for Weather, Wikipedia, and News APIs
+Provides integrations for Weather and News APIs
 """
 
 import requests
-import wikipediaapi
 import logging
 from typing import Dict, Optional
 
@@ -59,70 +58,6 @@ class WeatherTool:
             return None
         except (KeyError, IndexError) as e:
             logger.error(f"Error parsing weather data: {str(e)}")
-            return None
-
-
-class WikipediaTool:
-    """Tool for fetching information from Wikipedia"""
-    
-    def __init__(self):
-        self.wiki = wikipediaapi.Wikipedia(
-            user_agent='AI-Agent/1.0 (Educational Project)',
-            language='en'
-        )
-    
-    def search(self, query: str) -> Optional[Dict]:
-        """
-        Search Wikipedia for information
-        
-        Args:
-            query: Search query
-            
-        Returns:
-            Dictionary with page title and summary or None if not found
-        """
-        try:
-            page = self.wiki.page(query)
-            
-            if not page.exists():
-                # Try alternative approach using requests
-                return self._fallback_search(query)
-            
-            # Get first 3 sentences of the summary
-            summary = page.summary.split('. ')[:3]
-            summary_text = '. '.join(summary) + '.'
-            
-            result = {
-                "title": page.title,
-                "summary": summary_text,
-                "url": page.fullurl
-            }
-            
-            logger.info(f"Successfully fetched Wikipedia info for: {query}")
-            return result
-            
-        except Exception as e:
-            logger.error(f"Error fetching Wikipedia data: {str(e)}")
-            return self._fallback_search(query)
-    
-    def _fallback_search(self, query: str) -> Optional[Dict]:
-        """Fallback method using Wikipedia API directly"""
-        try:
-            url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query.replace(" ", "_")
-            response = requests.get(url, timeout=10)
-            response.raise_for_status()
-            
-            data = response.json()
-            
-            result = {
-                "title": data.get("title", query),
-                "summary": data.get("extract", "No information found."),
-                "url": data.get("content_urls", {}).get("desktop", {}).get("page", "")
-            }
-            
-            return result
-        except Exception as e:
-            logger.error(f"Fallback Wikipedia search failed: {str(e)}")
             return None
 
 

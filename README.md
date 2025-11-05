@@ -1,6 +1,6 @@
 # AI Agent - Backend Developer Assignment
 
-An intelligent backend service that combines LLM reasoning (Groq/OpenAI) with external API tools (Weather, Wikipedia, News) to create a sophisticated AI agent that can think, decide, and act.
+An intelligent backend service that combines LLM reasoning (Groq/OpenAI) with external API tools (Weather, News) to create a sophisticated AI agent that can think, decide, and act.
 
 ## 🎯 Project Overview
 
@@ -8,8 +8,8 @@ This FastAPI backend implements an AI agent that:
 
 - **Intelligently decides** when to use external APIs vs. pure LLM reasoning
 - **Supports multiple LLM providers**: Groq (FREE, recommended) or OpenAI
-- **Integrates multiple tools**: Weather (OpenWeatherMap), Wikipedia, and News API
-- **Maintains short-term memory** of recent conversations
+- **Integrates multiple tools**: Weather (OpenWeatherMap) and News API
+- **Maintains short-term memory** of recent conversations for context
 - **Provides detailed reasoning** for every response
 - **Handles errors gracefully** with comprehensive logging
 
@@ -39,7 +39,6 @@ This FastAPI backend implements an AI agent that:
 │  ┌───────────────────────────────┐  │
 │  │  2. Tool Selection            │  │
 │  │     - Weather                 │  │
-│  │     - Wikipedia               │  │
 │  │     - News                    │  │
 │  │     - LLM Only                │  │
 │  └───────────┬───────────────────┘  │
@@ -78,8 +77,7 @@ This FastAPI backend implements an AI agent that:
 ✅ **Multi-tool integration**:
 
 - 🌤️ Weather API (OpenWeatherMap)
-- 📚 Wikipedia API
-- 📰 News API
+- News API
 
 ✅ **LLM reasoning** - Groq (FREE) or OpenAI GPT-3.5/GPT-4 integration
 ✅ **Detailed reasoning** - Explanations of decision-making process
@@ -221,37 +219,28 @@ python test_api.py
 # Weather query
 curl -X POST "http://localhost:8000/ask" -H "Content-Type: application/json" -d '{\"query\": \"What is the weather in London today?\"}'
 
-# Wikipedia query
-curl -X POST "http://localhost:8000/ask" -H "Content-Type: application/json" -d '{\"query\": \"Who invented the telephone?\"}'
-
 # News query
 curl -X POST "http://localhost:8000/ask" -H "Content-Type: application/json" -d '{\"query\": \"Latest news about artificial intelligence\"}'
 
-# General knowledge query
+# General knowledge query (LLM only)
 curl -X POST "http://localhost:8000/ask" -H "Content-Type: application/json" -d '{\"query\": \"What is the capital of Japan?\"}'
 ```
 
-### Test Queries
+### Example Queries
 
 The following queries demonstrate different agent capabilities:
 
-1. **Weather Queries**
+**Weather Queries:**
 
-   - "What's the weather in London today?"
-   - "Is it raining in Tokyo?"
-   - "Temperature in New York?"
+- "What's the weather in London today?"
+- "Is it raining in Tokyo?"
+- "Temperature in New York?"
 
-2. **Wikipedia/Knowledge Queries**
+**News Queries:**
 
-   - "Who invented the telephone?"
-   - "What is the capital of Japan?"
-   - "Tell me about Albert Einstein"
-
-3. **News Queries**
-
-   - "Summarize the latest news about artificial intelligence"
-   - "Recent news about climate change"
-   - "What's happening with SpaceX?"
+- "Summarize the latest news about artificial intelligence"
+- "Recent news about climate change"
+- "What's happening with SpaceX?"
 
 4. **General Queries (LLM Only)**
    - "What are the benefits of meditation?"
@@ -297,23 +286,7 @@ The following queries demonstrate different agent capabilities:
 - Humidity, wind speed
 - "Feels like" temperature
 
-### 3. **Wikipedia API**
-
-**Purpose**: Factual information and general knowledge
-
-**Why chosen**:
-
-- Free and open
-- Comprehensive knowledge base
-- Multiple access methods (wikipedia-api library + REST API fallback)
-
-**Data retrieved**:
-
-- Article summaries
-- Page titles and URLs
-- Quick facts and definitions
-
-### 4. **News API**
+### 3. **News API**
 
 **Purpose**: Recent news articles and current events
 
@@ -345,7 +318,6 @@ The following queries demonstrate different agent capabilities:
 
    ```python
    if "weather" related → Use OpenWeatherMap API
-   elif "facts/knowledge" → Use Wikipedia API
    elif "news/recent events" → Use News API
    else → Use LLM reasoning only
    ```

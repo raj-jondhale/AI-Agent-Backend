@@ -2,6 +2,7 @@
 
 An intelligent backend service that combines LLM reasoning (Groq/OpenAI) with external API tools (Weather, News) to create a sophisticated AI agent that can think, decide, and act.
 
+
 ## 🎯 Project Overview
 
 This FastAPI backend implements an AI agent that:
